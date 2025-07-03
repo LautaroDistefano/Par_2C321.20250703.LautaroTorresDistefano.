@@ -5,7 +5,6 @@
 package CineSegundoParcial.visuals;
 
 import CineSegundoParcial.controlador.ControladorCine;
-import CineSegundoParcial.models.Cliente;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,11 +19,13 @@ import javafx.stage.Stage;
  *
  * @author Lautaro
  */
-public class LoginView extends VBox {
-
-    public LoginView(Stage stage, ControladorCine controladorCine) {
+public class RegistroView extends VBox{
+    public RegistroView(Stage stage, ControladorCine controladorCine) {
         setSpacing(10);
         setPadding(new Insets(20));
+
+        Label lblNombre = new Label("Nombre:");
+        TextField tfNombre = new TextField();
 
         Label lblEmail = new Label("Email:");
         TextField tfEmail = new TextField();
@@ -32,29 +33,35 @@ public class LoginView extends VBox {
         Label lblContrasena = new Label("Contraseña:");
         PasswordField pfContrasena = new PasswordField();
 
-        Button btnLogin = new Button("Iniciar sesión");
-        Button btnRegistro = new Button("Registrarse");
+        Button btnRegistrar = new Button("Registrarse");
 
-        btnLogin.setOnAction(e -> {
-            Cliente cliente = controladorCine.login(tfEmail.getText(), pfContrasena.getText());
-            if (cliente != null) {
-                new SalaView(stage, controladorCine, cliente);
+        btnRegistrar.setOnAction(e -> {
+            boolean exito = controladorCine.registrarCliente(
+                    tfNombre.getText(), tfEmail.getText(), pfContrasena.getText()
+            );
+            if (exito) {
+                mostrarInfo("Registro exitoso");
+                new LoginView(stage, controladorCine);
             } else {
-                mostrarAlerta("Error", "Credenciales inválidas");
+                mostrarAlerta("Ya existe un cliente con ese email");
             }
         });
 
-        btnRegistro.setOnAction(e -> {
-            new RegistroView(stage, controladorCine);
-        });
-
-        getChildren().addAll(lblEmail, tfEmail, lblContrasena, pfContrasena, btnLogin, btnRegistro);
+        getChildren().addAll(lblNombre, tfNombre, lblEmail, tfEmail, lblContrasena, pfContrasena, btnRegistrar);
         stage.setScene(new Scene(this));
     }
 
-    private void mostrarAlerta(String titulo, String mensaje) {
+    private void mostrarInfo(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titulo);
+        alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();

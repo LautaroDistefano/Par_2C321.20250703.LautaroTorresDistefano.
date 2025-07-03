@@ -4,6 +4,7 @@
  */
 package CineSegundoParcial.app;
 
+import CineSegundoParcial.controlador.ControladorCine;
 import CineSegundoParcial.visuals.LoginView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -23,9 +24,10 @@ public class CineSegundoParcial extends Application{
 
     @Override
     public void start(Stage primaryStage) {
-        LoginView login = new LoginView(primaryStage);
-        primaryStage.setTitle("Sistema de Login");
-        // El setScene ya está en el constructor de LoginView, así que no hace falta repetirlo
+        ControladorCine controlador = new ControladorCine();
+        controlador.inicializarSalasPorDefecto();
+        new LoginView(primaryStage, controlador);
+        primaryStage.setTitle("Sistema de Cine");
         primaryStage.show();
     }
     

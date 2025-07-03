@@ -4,11 +4,13 @@
  */
 package CineSegundoParcial.models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Lautaro
  */
-public class Cliente {
+public class Cliente implements Serializable{
     //Attributes
     private String nombre;
     private String email;
